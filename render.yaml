@@ -4,6 +4,7 @@ services:
     name: crypto-analyzer-api
     env: docker
     dockerfilePath: ./server/Dockerfile
+    plan: free
     envVars:
       - key: NODE_ENV
         value: production
@@ -21,6 +22,7 @@ services:
     name: crypto-analyzer-client
     env: docker
     dockerfilePath: ./client/Dockerfile
+    plan: free
     envVars:
       - key: VITE_API_URL
         value: https://crypto-analyzer-api.onrender.com/api
