@@ -22,7 +22,7 @@ const CoinAnalysisForm: React.FC<CoinAnalysisFormProps> = ({
   onChange, 
   onSave 
 }) => {
-  const { selectedCoin, isLoading } = useAnalysis();
+  const { selectedCoin, isLoading, currentCoinIndex, totalCoins } = useAnalysis();
   
   if (isLoading) {
     return (
@@ -31,6 +31,16 @@ const CoinAnalysisForm: React.FC<CoinAnalysisFormProps> = ({
           Загрузка данных...
         </Typography>
         <LinearProgress />
+      </Box>
+    );
+  }
+
+  if (!selectedCoin) {
+    return (
+      <Box my={2}>
+        <Typography variant="body1" color="textSecondary" align="center">
+          Монеты не найдены
+        </Typography>
       </Box>
     );
   }
@@ -51,8 +61,20 @@ const CoinAnalysisForm: React.FC<CoinAnalysisFormProps> = ({
       <form onSubmit={handleSubmit}>
         <Box mb={1}>
           <Typography variant="h6" component="h2" gutterBottom>
-            {selectedCoin ? `Анализ ${selectedCoin.name} (${selectedCoin.symbol.toUpperCase()})` : 'Анализ криптовалюты'}
+            Анализ {selectedCoin.name} ({selectedCoin.symbol.toUpperCase()})
           </Typography>
+          <Box display="flex" alignItems="center" mb={1}>
+            <Typography variant="body2" color="textSecondary">
+              Монета {currentCoinIndex + 1} из {totalCoins}
+            </Typography>
+            <Box sx={{ width: '100%', ml: 2 }}>
+              <LinearProgress 
+                variant="determinate" 
+                value={(currentCoinIndex / (totalCoins - 1)) * 100} 
+                sx={{ height: 8, borderRadius: 4 }}
+              />
+            </Box>
+          </Box>
         </Box>
         
         <Box mb={2}>
@@ -116,7 +138,7 @@ const CoinAnalysisForm: React.FC<CoinAnalysisFormProps> = ({
             color="primary" 
             size="medium"
           >
-            Сохранить
+            Сохранить и перейти к следующей
           </Button>
         </Box>
       </form>
