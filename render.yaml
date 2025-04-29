@@ -17,6 +17,8 @@ services:
         sync: false
       - key: GOOGLE_REDIRECT_URI
         value: https://crypto-analyzer-client.onrender.com/auth-callback
+      - key: CRYPTO_LIST
+        value: BTC,ETH,XRP,BNB,SOL,DOGE,ADA,TRX,TON,AVAX,MATIC,LINK,SHIB,LTC,DOT,BCH,ICP,UNI,ATOM,XLM,HBAR,NEAR,APT,VET,FIL,OP,ARB,ALGO,AAVE,GRT,IMX,RNDR,FLOW,SUI,TIA,MKR,LDO,QNT,AXS,RUNE,GALA,STX,FTM,EOS,THETA,CRO,HNT,PEPE,BONK,WIF
 
   # Фронтенд (Клиент)
   - type: web
