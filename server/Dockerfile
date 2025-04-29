@@ -2,14 +2,14 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Копирование package.json и package-lock.json
-COPY package*.json ./
+# Копирование только содержимого папки server
+COPY ./server/package*.json ./
 
 # Установка зависимостей
 RUN npm install --production
 
-# Копирование исходного кода
-COPY . .
+# Копирование исходного кода сервера
+COPY ./server/ .
 
 # Проверка наличия файла index.js (для отладки)
 RUN ls -la
@@ -21,4 +21,4 @@ EXPOSE 3001
 ENV NODE_ENV=production
 
 # Запуск приложения с явным указанием пути
-CMD ["node", "./index.js"]
+CMD ["node", "index.js"]
