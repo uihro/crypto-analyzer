@@ -1,8 +1,14 @@
 import axios from 'axios';
 import { Coin, CoinAnalysis, ApiResponse, GoogleAuthResponse, TokenVerificationResponse, ReportGenerationResponse } from '../types';
 
-// Базовый URL API
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+// Базовый URL API с приоритетом переменной среды, но с явным указанием URL для продакшена
+const isDevelopment = window.location.hostname === 'localhost';
+const API_URL = isDevelopment 
+  ? (import.meta.env.VITE_API_URL || 'http://localhost:3001/api')
+  : 'https://crypto-analyzer-api.onrender.com/api';
+
+console.log('Environment:', isDevelopment ? 'Development' : 'Production');
+console.log('Using API URL:', API_URL);
 
 // Создание экземпляра axios с базовым URL
 const api = axios.create({

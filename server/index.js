@@ -10,14 +10,20 @@ dotenv.config();
 // Инициализация приложения Express
 const app = express();
 const PORT = process.env.PORT || 3001;
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Настройки CORS в зависимости от окружения
+const corsOptions = {
+  origin: isProduction 
+    ? ['https://crypto-analyzer-client.onrender.com', 'https://crypto-analyzer-api.onrender.com'] 
+    : ['http://localhost:3000', 'http://localhost:3002'],
+  methods: ['GET', 'POST', 'OPTIONS'],
+  credentials: true
+};
 
 // Middleware
 app.use(helmet()); // Безопасность
-app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3002', 'https://crypto-analyzer-client.onrender.com'],  // Разрешаем оба порта и домен
-  methods: ['GET', 'POST'],
-  credentials: true
-}));
+app.use(cors(corsOptions));
 app.use(express.json()); // Парсинг JSON
 app.use(express.urlencoded({ extended: true })); // Парсинг URL-encoded данных
 
