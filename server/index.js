@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3001;
 // Middleware
 app.use(helmet()); // Безопасность
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3002'],  // Разрешаем оба порта
+  origin: ['http://localhost:3000', 'http://localhost:3002', 'https://crypto-analyzer-client.onrender.com'],  // Разрешаем оба порта и домен
   methods: ['GET', 'POST'],
   credentials: true
 }));
