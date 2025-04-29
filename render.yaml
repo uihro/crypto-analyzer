@@ -1,0 +1,26 @@
+services:
+  # Бэкенд (API)
+  - type: web
+    name: crypto-analyzer-api
+    env: docker
+    dockerfilePath: ./server/Dockerfile
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_REDIRECT_URI
+        value: https://crypto-analyzer-client.onrender.com/auth-callback
+
+  # Фронтенд (Клиент)
+  - type: web
+    name: crypto-analyzer-client
+    env: docker
+    dockerfilePath: ./client/Dockerfile
+    envVars:
+      - key: VITE_API_URL
+        value: https://crypto-analyzer-api.onrender.com/api
