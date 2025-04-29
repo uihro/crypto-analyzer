@@ -9,41 +9,29 @@ import {
   Divider,
   LinearProgress
 } from '@mui/material';
-import { Coin, CoinAnalysis } from '../types';
+import { CoinAnalysis } from '../types';
 import { useAnalysis } from '../context/AnalysisContext';
 
 interface CoinAnalysisFormProps {
-  coin: Coin | null;
   analysis: Partial<CoinAnalysis>;
   onChange: (field: keyof Omit<CoinAnalysis, 'coin'>, value: string) => void;
   onSave: () => void;
 }
 
 const CoinAnalysisForm: React.FC<CoinAnalysisFormProps> = ({ 
-  coin, 
   analysis, 
   onChange, 
   onSave 
 }) => {
-  const { currentCoinIndex, totalCoins, isLoading } = useAnalysis();
+  const { selectedCoin, isLoading } = useAnalysis();
   
   if (isLoading) {
     return (
-      <Box my={4}>
+      <Box my={2}>
         <Typography variant="body1" color="textSecondary" align="center" gutterBottom>
-          Загрузка списка криптовалют...
+          Загрузка данных...
         </Typography>
         <LinearProgress />
-      </Box>
-    );
-  }
-  
-  if (!coin) {
-    return (
-      <Box my={2}>
-        <Typography variant="body1" color="textSecondary" align="center">
-          Выберите криптовалюту из списка для анализа
-        </Typography>
       </Box>
     );
   }
@@ -60,96 +48,76 @@ const CoinAnalysisForm: React.FC<CoinAnalysisFormProps> = ({
   };
 
   return (
-    <Paper elevation={2} sx={{ p: 3, mt: 2 }}>
+    <Paper elevation={2} sx={{ p: 2 }}>
       <form onSubmit={handleSubmit}>
-        <Box mb={2}>
-          <Typography variant="h5" component="h2" gutterBottom>
-            Анализ {coin.name} ({coin.symbol.toUpperCase()})
+        <Box mb={1}>
+          <Typography variant="h6" component="h2" gutterBottom>
+            {selectedCoin ? `Анализ ${selectedCoin.name} (${selectedCoin.symbol.toUpperCase()})` : 'Анализ криптовалюты'}
           </Typography>
-          <Box display="flex" alignItems="center" mb={1}>
-            <Typography variant="body2" color="textSecondary">
-              Монета {currentCoinIndex + 1} из {totalCoins}
-            </Typography>
-            <Box sx={{ width: '100%', ml: 2 }}>
-              <LinearProgress 
-                variant="determinate" 
-                value={(currentCoinIndex / (totalCoins - 1)) * 100} 
-                sx={{ height: 8, borderRadius: 4 }}
-              />
-            </Box>
-          </Box>
         </Box>
         
-        <Box my={3}>
-          <Typography variant="h6" gutterBottom>
+        <Box mb={2}>
+          <Typography variant="subtitle1" gutterBottom>
             Шорт-позиция
           </Typography>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <TextField
-                label="Краткое название/заметки для шорт-позиции"
-                fullWidth
-                value={analysis.shortPositionNotes || ''}
-                onChange={handleChange('shortPositionNotes')}
-                variant="outlined"
-                margin="normal"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Анализ для шорт-позиции"
-                fullWidth
-                multiline
-                rows={4}
-                value={analysis.shortAnalysis || ''}
-                onChange={handleChange('shortAnalysis')}
-                variant="outlined"
-                margin="normal"
-              />
-            </Grid>
-          </Grid>
+          <TextField
+            label="Заметки для шорт-позиции"
+            fullWidth
+            value={analysis.shortPositionNotes || ''}
+            onChange={handleChange('shortPositionNotes')}
+            variant="outlined"
+            margin="dense"
+            size="small"
+          />
+          <TextField
+            label="Анализ для шорт-позиции"
+            fullWidth
+            multiline
+            rows={2}
+            value={analysis.shortAnalysis || ''}
+            onChange={handleChange('shortAnalysis')}
+            variant="outlined"
+            margin="dense"
+            size="small"
+          />
         </Box>
         
-        <Divider sx={{ my: 3 }} />
+        <Divider sx={{ my: 1 }} />
         
-        <Box my={3}>
-          <Typography variant="h6" gutterBottom>
+        <Box mb={2}>
+          <Typography variant="subtitle1" gutterBottom>
             Лонг-позиция
           </Typography>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <TextField
-                label="Краткое название/заметки для лонг-позиции"
-                fullWidth
-                value={analysis.longPositionNotes || ''}
-                onChange={handleChange('longPositionNotes')}
-                variant="outlined"
-                margin="normal"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Анализ для лонг-позиции"
-                fullWidth
-                multiline
-                rows={4}
-                value={analysis.longAnalysis || ''}
-                onChange={handleChange('longAnalysis')}
-                variant="outlined"
-                margin="normal"
-              />
-            </Grid>
-          </Grid>
+          <TextField
+            label="Заметки для лонг-позиции"
+            fullWidth
+            value={analysis.longPositionNotes || ''}
+            onChange={handleChange('longPositionNotes')}
+            variant="outlined"
+            margin="dense"
+            size="small"
+          />
+          <TextField
+            label="Анализ для лонг-позиции"
+            fullWidth
+            multiline
+            rows={2}
+            value={analysis.longAnalysis || ''}
+            onChange={handleChange('longAnalysis')}
+            variant="outlined"
+            margin="dense"
+            size="small"
+          />
         </Box>
         
-        <Box mt={4} display="flex" justifyContent="flex-end">
+        <Box display="flex" justifyContent="flex-end">
           <Button 
             type="submit" 
             variant="contained" 
             color="primary" 
-            size="large"
+            size="medium"
           >
-            Сохранить анализ
+            Сохранить
           </Button>
         </Box>
       </form>

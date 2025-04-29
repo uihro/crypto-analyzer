@@ -44,14 +44,22 @@ const theme = createTheme({
 // Главный компонент приложения
 const MainApp: React.FC = () => {
   const { 
-    selectedCoin,
+    allCoins,
     currentAnalysis, 
     accessToken,
     updateAnalysis, 
     saveAnalysis, 
     analysisResults,
-    googleAccessToken
+    googleAccessToken,
+    setSelectedCoin
   } = useAnalysis();
+
+  // Автоматически выбираем первую монету если список загружен
+  React.useEffect(() => {
+    if (allCoins && allCoins.length > 0) {
+      setSelectedCoin(allCoins[0]);
+    }
+  }, [allCoins, setSelectedCoin]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -68,21 +76,16 @@ const MainApp: React.FC = () => {
         </Toolbar>
       </AppBar>
       
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        <Grid container spacing={3}>
-          {/* Убрали блок со списком криптовалют */}
-          
-          {/* Форма анализа если выбрана монета */}
-          {selectedCoin && (
-            <Grid item xs={12}>
-              <CoinAnalysisForm 
-                coin={selectedCoin} 
-                analysis={currentAnalysis} 
-                onChange={updateAnalysis} 
-                onSave={saveAnalysis} 
-              />
-            </Grid>
-          )}
+      <Container maxWidth="md" sx={{ mt: 3, mb: 3 }}>
+        <Grid container spacing={2}>
+          {/* Форма анализа - теперь всегда отображается */}
+          <Grid item xs={12}>
+            <CoinAnalysisForm 
+              analysis={currentAnalysis} 
+              onChange={updateAnalysis} 
+              onSave={saveAnalysis} 
+            />
+          </Grid>
           
           {/* Генерация отчета */}
           <Grid item xs={12}>
